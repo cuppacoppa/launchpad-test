@@ -183,26 +183,7 @@ const Home = () => {
       <GlobalStyle />
 
       <BannerWrapper>
-        <img
-          src={particleTopLeft}
-          className="section__particle top-left"
-          alt="cryptik particles"
-        />
-        <img
-          src={particleUnderLogo}
-          className="section__particle two"
-          alt="cryptik particles"
-        />
-        <img
-          src={prticleTopRight}
-          className="section__particle top-right"
-          alt="cryptik particles"
-        />
-        <img
-          src={particleBottomLeft}
-          className="section__particle bottom-left"
-          alt="cryptik particles"
-        />
+        
         <img
           src={particleBottomRight}
           className="section__particle bottom-right"
