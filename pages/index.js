@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { ThemeProvider } from "styled-components";
-import Flexbox from 'flexbox-react';
+import Flexbox from "flexbox-react";
 
 import Navigation from "sections/Navigation";
-import BannerTwo from 'sections/BannerTwo';
+import BannerTwo from "sections/BannerTwo";
 import CoinFund from "sections/CoinFund";
 import Footer from "sections/Footer";
 
@@ -29,8 +29,6 @@ import Web3Modal from "web3modal";
 import { contract_address, abi } from "../config";
 import CoinFundWrapper from "./coinFund.style";
 
-
-
 import Badge from "reusecore/Badge";
 import Image from "reusecore/Image";
 
@@ -42,150 +40,141 @@ import prticleTopRight from "assets/images/particles/banner/prticle-top-right.pn
 import particleBottomLeft from "assets/images/particles/banner/particle-bottom-left.png";
 import particleBottomRight from "assets/images/particles/banner/particle-bottom-right.png";
 
-import {FaGithub} from 'react-icons/fa'
+import { FaGithub } from "react-icons/fa";
 
-import keyIcon from 'assets/images/banners/banner-two/cryptik-banner-key-icon.svg';
-import watchIcon from 'assets/images/banners/banner-two/cryptik-banner-watch-icon.svg';
-import heartIcon from 'assets/images/banners/banner-two/cryptik-banner-heart-icon.svg';
-import stackedCoins from 'assets/images/banners/banner-two/stackedCoins.png';
+import keyIcon from "assets/images/banners/banner-two/cryptik-banner-key-icon.svg";
+import watchIcon from "assets/images/banners/banner-two/cryptik-banner-watch-icon.svg";
+import heartIcon from "assets/images/banners/banner-two/cryptik-banner-heart-icon.svg";
+import stackedCoins from "assets/images/banners/banner-two/stackedCoins.png";
 
 import BannerWrapper from "./banner.style";
 
-
-
-
-
 const Home = () => {
-  const [whitelist_Address, setWhitelist_Address] = useState("")
-  const [gas_price, setGas_price] = useState("")
-  const [eth_amount, setEth_amount] = useState("")
-  const [funds_raised, setFunds_raised] = useState("0")
-  const [total_buyers, setTotalBuyers] = useState("0")
-
-
+  const [whitelist_Address, setWhitelist_Address] = useState("");
+  const [gas_price, setGas_price] = useState("");
+  const [eth_amount, setEth_amount] = useState("");
+  const [funds_raised, setFunds_raised] = useState("0");
+  const [total_buyers, setTotalBuyers] = useState("0");
 
   useEffect(() => {
-    connect_wallet()
-      fetch_data()
-  }, [])
+    connect_wallet();
+    fetch_data();
+  }, []);
 
-  async function fetch_data(){
-    if(Web3.givenProvider ){ 
-
+  async function fetch_data() {
+    if (Web3.givenProvider) {
       const web3 = new Web3(Web3.givenProvider);
-      await Web3.givenProvider.enable()
+      await Web3.givenProvider.enable();
       const contract = new web3.eth.Contract(abi, contract_address);
 
-      const addresses = await web3.eth.getAccounts()
-      const address = addresses[0]
-      console.log("addresses[0]: "+addresses[0])
-        //await Web3.givenProvider.enable()
+      const addresses = await web3.eth.getAccounts();
+      const address = addresses[0];
+      //await Web3.givenProvider.enable()
 
+      // Update Function name Here
+      contract.methods.get_total_buyers().call((err, result) => {
+        if (result != null) {
+          setTotalBuyers(result);
+        }
+      });
 
-        // Update Function name Here
-        contract.methods.get_total_buyers().call((err, result) => {
-            if (result != null) {
-                setTotalBuyers(result)
-            }
-        })
-
-        // Update Function name Here
-        contract.methods.get_raised_fund().call((err, result) => {
-            if (result != null) {
-                setFunds_raised(result)
-            }
-        })
+      // Update Function name Here
+      contract.methods.get_raised_fund().call((err, result) => {
+        if (result != null) {
+          setFunds_raised(result);
+        }
+      });
     }
-
-
-}
-  async function connect_wallet(){
-    if(Web3.givenProvider){
+  }
+  async function connect_wallet() {
+    if (Web3.givenProvider) {
       const providerOptions = {
         /* See Provider Options Section */
       };
-      
+
       const web3Modal = new Web3Modal({
         network: "mainnet", // optional
         cacheProvider: true, // optional
-        providerOptions // required
+        providerOptions, // required
       });
-      
+
       const provider = await web3Modal.connect();
       const web3 = new Web3(provider);
 
-      web3.eth.getGasPrice().then(result => {
-        console.log(result)
-        setGas_price(result)
+      web3.eth.getGasPrice().then((result) => {
+        console.log(result);
+        setGas_price(result);
       });
-
-      
-    
-    }else{
+    } else {
       alert("Web3 Not Found");
       //setwalletText("Connected");
     }
-
   }
 
-  const whitelistAddress = async function(){
-    console.log("whitelist address:"+whitelist_Address)
-    if(whitelist_Address !== "" || whitelist_Address !== "0"){
-      if(Web3.givenProvider ){ 
-
+  const whitelistAddress = async function () {
+    console.log("whitelist address:" + whitelist_Address);
+    if (whitelist_Address !== "" || whitelist_Address !== "0") {
+      if (Web3.givenProvider) {
         const web3 = new Web3(Web3.givenProvider);
-        await Web3.givenProvider.enable()
+        await Web3.givenProvider.enable();
         const contract = new web3.eth.Contract(abi, contract_address);
-  
-        const addresses = await web3.eth.getAccounts()
-        const address = addresses[0]
-        console.log("addresses[0]: "+addresses[0])
+
+        const addresses = await web3.eth.getAccounts();
+        const address = addresses[0];
+        console.log("addresses[0]: " + addresses[0]);
         // console.log("addresses[1]: "+addresses[1])
         // console.log("Default address: "+await web3.eth.defaultAccount)
 
         // Update Function name Here
-        contract.methods.includeAccount(whitelist_Address).send({from : address, gasPrice: gas_price, gas: 3000000}, (err, result) => {
-          if(err != null){
-              alert("Error");
-
-          }
-          if(result != null){
-              //alert("Whitelist Successful")
-          }
-      })
-  
+        contract.methods
+          .includeAccount(whitelist_Address)
+          .send(
+            { from: address, gasPrice: gas_price, gas: 3000000 },
+            (err, result) => {
+              if (err != null) {
+                alert("Error");
+              }
+              if (result != null) {
+                //alert("Whitelist Successful")
+              }
+            }
+          );
       }
-    }else{
+    } else {
       alert("Enter Whitelist Address");
     }
-
-
-  }
-  async function buy_tokens(){
-
-    if(Web3.givenProvider ){ 
-
+  };
+  async function buy_tokens() {
+    if (Web3.givenProvider) {
       const web3 = new Web3(Web3.givenProvider);
-      await Web3.givenProvider.enable()
+      await Web3.givenProvider.enable();
       const contract = new web3.eth.Contract(contract_abi, contract_address);
 
-      const addresses = await web3.eth.getAccounts()
-      const address = addresses[0]
-      console.log("addresses[0]: "+addresses[0])
-      console.log("Contract Address: "+ contract_address);
+      const addresses = await web3.eth.getAccounts();
+      const address = addresses[0];
+      console.log("addresses[0]: " + addresses[0]);
+      console.log("Contract Address: " + contract_address);
       // console.log("addresses[1]: "+addresses[1])
       // console.log("Default address: "+await web3.eth.defaultAccount)
-      console.log("300000");
 
-      const result = await contract.methods.buy().send({from : address, value: web3.utils.toWei(eth_amount,"ether"), gas: 400000})
-
+      const result = await contract.methods.buy().send({
+        from: address,
+        value: web3.utils.toWei(eth_amount, "ether"),
+        gas: 400000,
+      });
     }
-
-}
+  }
   return (
     <ThemeProvider theme={theme}>
+      <nav>
+        <Link href="">
+          <a onClick={connect_wallet} className="connect-btn">
+            Connect Wallet
+          </a>
+        </Link>
+      </nav>
       <Head>
-      <title>KCCGO | Launchpad</title>
+        <title>KCCGO | Launchpad</title>
         <meta name="Description" content="React next landing page" />
         <meta name="theme-color" content="#280D57" />
         <link rel="shortcut icon" type="image/x-icon" href={FavIcon} />
@@ -193,91 +182,81 @@ const Home = () => {
 
       <GlobalStyle />
 
-        <BannerWrapper>
-      <img src={particleTopLeft} className="section__particle top-left" alt="cryptik particles"/>
-      <img src={particleUnderLogo} className="section__particle two" alt="cryptik particles"/>
-      <img src={prticleTopRight} className="section__particle top-right" alt="cryptik particles"/>
-      <img src={particleBottomLeft} className="section__particle bottom-left" alt="cryptik particles"/>
-      <img src={particleBottomRight} className="section__particle bottom-right" alt="cryptik particles"/>
-      <Container>
-
-
-                  <Flexbox element="banner" justifyContent="flex-end" alignItems="flex-end" flexDirection="row">
-                      <Image src={BannerImage} alt="crypto banner icon" style={{ width: 400, height: 400, float: 'right', top: '25%'}} />
-                  </Flexbox>
-                  
-                
-        <Row>
-          <Col className="lg-7 md-10 xs-12">
-              <Box className="banner-content">
-                              
-              <Heading>
-               KCCGO Launchpad
-              </Heading>
+      <BannerWrapper>
+        <img
+          src={particleTopLeft}
+          className="section__particle top-left"
+          alt="cryptik particles"
+        />
+        <img
+          src={particleUnderLogo}
+          className="section__particle two"
+          alt="cryptik particles"
+        />
+        <img
+          src={prticleTopRight}
+          className="section__particle top-right"
+          alt="cryptik particles"
+        />
+        <img
+          src={particleBottomLeft}
+          className="section__particle bottom-left"
+          alt="cryptik particles"
+        />
+        <img
+          src={particleBottomRight}
+          className="section__particle bottom-right"
+          alt="cryptik particles"
+        />
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <Heading className="heading">KCCGO Launchpad</Heading>
               <Text as="span" className="description">
-                                  Launching X/X/20XX X:XX PM (UCT)
-                              </Text>
-
-
-                                  <Box className="coin-fund-content-left">
-                                  <Box className="btn-wrapper">
-                              
-                                  <Link href="">
-                                      <a onClick={connect_wallet} className="btn btn-fill">Connect Wallet</a>
-                                  </Link>
-                                  </Box>
-                              </Box>
-
-
-              <Box className="coin-info">
-                <Box>
+                Launching X/X/20XX X:XX PM (UCT)
+              </Text>
+              <div className="coins__list">
+                <div className="coin">
                   <Image src={stackedCoins} alt="crypto banner icon" />
                   <Text>Softcap</Text>
-                </Box>
-                <Box>
+                </div>
+                <div className="coin">
                   <Image src={watchIcon} alt="crypto banner icon" />
                   <Text>Hardcap</Text>
-                </Box>
-                <Box>
+                </div>
+                <div className="coin">
                   <Image src={heartIcon} alt="crypto banner icon" />
                   <Text>Max amount can spend</Text>
-                </Box>
-              </Box>
-                              <CoinFundWrapper id="token" style={{ width: 400, height: 50 }}>
-
-              <Box className="coin-fund-content-left">
-              <Box className="btn-wrapper">
-              <h2>Funds Raised: {funds_raised} Eth</h2>
-              <h2>Total Buyers: {total_buyers}</h2>
-                 <input style={{width: 400 ,height: 50 }}
-                        type="text"
-                        onChange={e => { setEth_amount(e.target.value); }}
-                        placeholder="Enter BNB Amount"
-                      />
-                   </Box> 
-                
-                <Box className="btn-wrapper">                    
-                  <Link href="">
-                    <a onClick={buy_tokens} className="btn btn-fill">Buy</a>
-                  </Link>
-                </Box>
-                </Box>
-
-        </CoinFundWrapper>
-              {/* <Box className="banner-btn">
-                <Link href="#">
-                  <a className="btn btn-fill"> <FaGithub /> Download Crypto</a>
-                </Link> 
-              </Box> */}
-            </Box>
-          </Col>
-        </Row>
-      </Container>
-    </BannerWrapper>  
-
-
-          
-
+                </div>
+              </div>
+              <div>
+                <h2>Funds Raised: {funds_raised} Eth</h2>
+                <h2>Total Buyers: {total_buyers}</h2>
+                <input
+                  type="text"
+                  className="input"
+                  onChange={(e) => {
+                    setEth_amount(e.target.value);
+                  }}
+                  placeholder="Enter BNB Amount"
+                />
+              </div>
+              <Link href="">
+                <button onClick={buy_tokens} className="connect-btn buy-btn">
+                  Buy
+                </button>
+              </Link>
+            </div>
+            <div className="col">
+              <Image
+                src={BannerImage}
+                alt="crypto banner icon"
+                style={{ width: 400, height: 400 }}
+              />
+            </div>
+          </div>
+        </div>
+ </BannerWrapper>
     </ThemeProvider>
   );
 };

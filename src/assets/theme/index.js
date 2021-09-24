@@ -105,6 +105,89 @@ button, .btn{
   border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
 }
+nav {
+  display:flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+.connect-btn {
+  padding:0.5rem 1rem;
+  background-color:#21B573;
+  border-radius: 2rem;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+.coins__list {
+  display:flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+.col {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.coin {
+  display:flex;
+  margin-right: 4rem;
+}
+.coin > img {
+  width: 25px;
+  height:25px;
+  margin-right:1rem
+}
+.heading {
+  font-size: 2rem;
+}
+.buy-btn {
+  margin-top:2rem;
+  color: white;
+}
+.input {
+  max-width: 400px;
+  width: 100%;
+  height: 50px;
+  padding: 1rem;
+}
+.container {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+@media only screen and (min-width: 500px) {
+  .heading {
+    font-size: 3rem;
+  }
+  .col {
+    width: 40%;
+    margin:0;
+
+  }
+  .row {
+    display:flex;
+  }
+  nav {
+    display:flex;
+    justify-content: flex-end;
+    padding: 2rem;
+  }
+  .connect-btn { 
+    margin-right: 0.5rem;
+    padding:1rem 2rem;
+    font-size: 1.2rem;
+  }
+  .coins__list {
+    flex-direction: row;
+  }
+  .coin > img {
+    margin-right:0.5rem
+  }
+}
 `
 
 export default GlobalStyle

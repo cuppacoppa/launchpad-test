@@ -3,7 +3,7 @@ import styled from "styled-components";
 const BannerWrapper = styled.div`
   position: relative;
   overflow: hidden;
-  padding: 278px 0 150px 0;
+  padding: 100px 0 150px 0;
 
   .banner__thumb{
     position: absolute;
@@ -228,7 +228,7 @@ const BannerWrapper = styled.div`
     }
   }
   @media only screen and (max-width: 768px) { 
-    padding: 180px 0 120px 0;
+    padding: 80px 0 120px 0;
     .banner-content {
       .heading{
         font-size: 35px;
