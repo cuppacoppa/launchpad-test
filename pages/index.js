@@ -72,14 +72,14 @@ const Home = () => {
       //await Web3.givenProvider.enable()
 
       // Update Function name Here
-      contract.methods.get_total_buyers().call((err, result) => {
+      contract.methods.returnPreSaleMember().call((err, result) => {
         if (result != null) {
           setTotalBuyers(result);
         }
       });
 
       // Update Function name Here
-      contract.methods.get_raised_fund().call((err, result) => {
+      contract.methods.returnPreSaleAmount().call((err, result) => {
         if (result != null) {
           setFunds_raised(result);
         }
@@ -111,56 +111,26 @@ const Home = () => {
     }
   }
 
-  const whitelistAddress = async function () {
-    console.log("whitelist address:" + whitelist_Address);
-    if (whitelist_Address !== "" || whitelist_Address !== "0") {
+ 
+  async function buy() {
       if (Web3.givenProvider) {
-        const web3 = new Web3(Web3.givenProvider);
-        await Web3.givenProvider.enable();
-        const contract = new web3.eth.Contract(abi, contract_address);
-
-        const addresses = await web3.eth.getAccounts();
-        const address = addresses[0];
-        console.log("addresses[0]: " + addresses[0]);
-        // console.log("addresses[1]: "+addresses[1])
-        // console.log("Default address: "+await web3.eth.defaultAccount)
-
-        // Update Function name Here
-        contract.methods
-          .includeAccount(whitelist_Address)
-          .send(
-            { from: address, gasPrice: gas_price, gas: 3000000 },
-            (err, result) => {
-              if (err != null) {
-                alert("Error");
-              }
-              if (result != null) {
-                //alert("Whitelist Successful")
-              }
-            }
-          );
-      }
-    } else {
-      alert("Enter Whitelist Address");
-    }
-  };
-  async function buy_tokens() {
-    if (Web3.givenProvider) {
       const web3 = new Web3(Web3.givenProvider);
       await Web3.givenProvider.enable();
-      const contract = new web3.eth.Contract(contract_abi, contract_address);
+      const contract = new web3.eth.Contract(abi, contract_address);
 
       const addresses = await web3.eth.getAccounts();
-      const address = addresses[0];
+          const address = addresses[0];
+          const amount = web3.utils.toWei(eth_amount, "ether")
       console.log("addresses[0]: " + addresses[0]);
-      console.log("Contract Address: " + contract_address);
+          console.log("Contract Address: " + contract_address);
+
       // console.log("addresses[1]: "+addresses[1])
       // console.log("Default address: "+await web3.eth.defaultAccount)
-
-      const result = await contract.methods.buy().send({
+        const result = await contract.methods.buy(amount).send({
         from: address,
         value: web3.utils.toWei(eth_amount, "ether"),
-        gas: 400000,
+            gas: 400000,
+            type: '0x2'
       });
     }
   }
@@ -198,7 +168,7 @@ const Home = () => {
               </Text>
               <div className="coins__list">
                 <div className="coin">
-                  <Image src={stackedCoins} alt="crypto banner icon" />
+                                  <Image src={keyIcon} alt="crypto banner icon" />
                   <Text>Softcap</Text>
                 </div>
                 <div className="coin">
@@ -211,7 +181,7 @@ const Home = () => {
                 </div>
               </div>
               <div>
-                <h2>Funds Raised: {funds_raised} Eth</h2>
+                <h2>Funds Raised: {funds_raised} Bnb</h2>
                 <h2>Total Buyers: {total_buyers}</h2>
                 <input
                   type="text"
@@ -223,7 +193,7 @@ const Home = () => {
                 />
               </div>
               <Link href="">
-                <button onClick={buy_tokens} className="connect-btn buy-btn">
+                <button onClick={buy} className="connect-btn buy-btn">
                   Buy
                 </button>
               </Link>
