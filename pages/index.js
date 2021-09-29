@@ -81,7 +81,7 @@ const Home = () => {
       // Update Function name Here
       contract.methods.returnPreSaleAmount().call((err, result) => {
         if (result != null) {
-          setFunds_raised(result);
+            setFunds_raised(result / 1000000000000000000);
         }
       });
     }
@@ -93,7 +93,7 @@ const Home = () => {
       };
 
       const web3Modal = new Web3Modal({
-        network: "mainnet", // optional
+        network: "binance", // optional
         cacheProvider: true, // optional
         providerOptions, // required
       });
@@ -129,8 +129,7 @@ const Home = () => {
         const result = await contract.methods.buy(amount).send({
         from: address,
         value: web3.utils.toWei(eth_amount, "ether"),
-            gas: 400000,
-            type: '0x2'
+            gas: 400000
       });
     }
   }
@@ -164,20 +163,20 @@ const Home = () => {
             <div className="col">
               <Heading className="heading">KCCGO Launchpad</Heading>
               <Text as="span" className="description">
-                Launching X/X/20XX X:XX PM (UCT)
+                Launching 9/30/2021
               </Text>
               <div className="coins__list">
                 <div className="coin">
                                   <Image src={keyIcon} alt="crypto banner icon" />
-                  <Text>Softcap</Text>
+                  <Text>Softcap: 50 BNB</Text>
                 </div>
                 <div className="coin">
                   <Image src={watchIcon} alt="crypto banner icon" />
-                  <Text>Hardcap</Text>
+                  <Text>Hardcap: 90 BNB</Text>
                 </div>
                 <div className="coin">
                   <Image src={heartIcon} alt="crypto banner icon" />
-                  <Text>Max amount can spend</Text>
+                  <Text>Max spend: 2 BNB</Text>
                 </div>
               </div>
               <div>
