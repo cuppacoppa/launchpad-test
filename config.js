@@ -1,4 +1,4 @@
-export const contract_address = "0xAdC3887f4b9F34bc37FC41c795179b261A76092D";
+export const contract_address = "0x7E52AC4cf871B45Caf1d3E09dCBb42D0305fD3Ae";
 export const abi = [
 	{
 		"anonymous": false,
@@ -378,6 +378,13 @@ export const abi = [
 	},
 	{
 		"inputs": [],
+		"name": "withdrawAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -397,6 +404,19 @@ export const abi = [
 	{
 		"inputs": [],
 		"name": "_getMaxWtSize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "_getRate",
 		"outputs": [
 			{
 				"internalType": "uint256",
